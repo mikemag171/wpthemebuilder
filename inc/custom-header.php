@@ -20,7 +20,15 @@
  *
  * @uses firstgen_header_style()
  */
+
 function firstgen_custom_header_setup() {
+    add_theme_support( 'custom-logo', array(
+        'width' => 96,
+        'height' => 96,
+        'flex-width' => false,
+        'flex-height' => false,
+    ) );
+    
 	add_theme_support( 'custom-header', apply_filters( 'firstgen_custom_header_args', array(
 		'default-image'          => '',
 		'default-text-color'     => '000000',
@@ -28,6 +36,8 @@ function firstgen_custom_header_setup() {
 		'height'                 => 250,
 		'flex-height'            => true,
 		'wp-head-callback'       => 'firstgen_header_style',
+        'admin-head-callback'    => 'firstgen_admin_header_style',
+        'admin-preview-callback' => 'firstgen_admin_header_image',
 	) ) );
 }
 add_action( 'after_setup_theme', 'firstgen_custom_header_setup' );

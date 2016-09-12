@@ -45,6 +45,7 @@ function firstgen_setup() {
 	// This theme uses wp_nav_menu() in one location.
 	register_nav_menus( array(
 		'primary' => esc_html__( 'Primary', 'firstgen' ),
+        'secondary' => esc_html__( 'Secondary Menu', 'firstgen' ),
 	) );
 
 	/*
@@ -105,9 +106,15 @@ function firstgen_scripts() {
 	wp_enqueue_style( 'firstgen-style', get_stylesheet_uri() );
         
     wp_enqueue_style( 'firstgen-local-fonts', get_template_directory_uri() . '/fonts/custom-fonts.css' );
+    
+    wp_enqueue_style( 'firstgen-fontawesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css');
 
-	wp_enqueue_script( 'firstgen-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20151215', true );
-
+	wp_enqueue_script( 'firstgen-navigation', get_template_directory_uri() . '/js/navigation.js', array( 'jquery' ), '20151215', true );
+    wp_localize_script( 'firstgen-navigation', 'screenReaderText', array(
+		'expand'   => '<span class="screen-reader-text">' . __( 'expand child menu', 'wpthemebuilder' ) . '</span>',
+		'collapse' => '<span class="screen-reader-text">' . __( 'collapse child menu', 'wpthemebuilder' ) . '</span>',
+	) );
+    
 	wp_enqueue_script( 'firstgen-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '20151215', true );
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {

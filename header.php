@@ -21,49 +21,53 @@
 </head>
 
 <body <?php body_class(); ?>>
-<div id="page" class="site">
+<div id="page" class="site <?php echo get_theme_mod( 'layout_setting', 'no-sidebar' ); ?>">
 	<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'firstgen' ); ?></a>
 
-	<!-- The following code is used to detect an available background image, and then set it as a background image in the site-header content. --!>
-    
-    <?php if ( get_header_image() ) { ?>
-        <header id="masthead" class="site-header" style="background-image: url(<?php header_image(); ?>)" role="banner">
-    <?php } else { ?>
-        <header id="masthead" class="site-header" role="banner">
-    <?php } ?>
-         
-        
-        
-        <!--The following code is used with a header. If 'get_custom_header' returns an image, then the 'a' anchor will provide a link to point to 'home' followed by an image which contains the actual image file. If so, then the Anchor (A) will give the link to the image. 
-
-        The image can further be edited and customized in the file: custom-header.php .--!>
-        
-        <!-- <?php if ( get_header_image() ) : ?>
-	       <a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
-		      <img src="<?php header_image(); ?>" width="<?php echo esc_attr( get_custom_header()->width ); ?>" height="<?php echo esc_attr( get_custom_header()->height ); ?>" alt="">
-	       </a>
-	
-        <?php endif; // End header image check. ?>  --!>
-        
-		<div class="site-branding">
-			<?php
-			if ( is_front_page() && is_home() ) : ?>
+	<?php if ( get_header_image() ) { ?>
+		<header id="masthead" class="site-header" style="background-image: url(<?php header_image(); ?>)" role="banner">
+	<?php } else { ?>
+		<header id="masthead" class="site-header" role="banner">
+	<?php } ?>
+			
+		<?php // Display site icon or first letter as logo ?>	
+		<div class="site-logo">
+			<?php $site_title = get_bloginfo( 'name' ); ?>
+			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
+				<div class="screen-reader-text">
+					<?php printf( esc_html__('Go to the home page of %1$s', 'firstgen'), $site_title ); ?>	
+				</div>
+				<?php
+				if ( has_custom_logo() ) {
+                    the_custom_logo();
+                } else { ?>
+                <div class="site-firstletter" aria-hidden="true">
+						<?php echo substr($site_title, 0, 1); ?>
+					</div>
+				<?php } ?>
+			</a>
+		</div>
+		
+		
+        <?php //The following code contains a conditional statement that will hide the header-branding class ?>
+        <div class="site-branding<?php if ( is_singular() /*Is it a post or page?*/ ) { echo ' screen-reader-text'; } ?>">
+			<?php if ( is_front_page() && is_home() ) : ?>
 				<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
 			<?php else : ?>
 				<p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
-			<?php
-			endif;
-
+			<?php endif;
 			$description = get_bloginfo( 'description', 'display' );
 			if ( $description || is_customize_preview() ) : ?>
 				<p class="site-description"><?php echo $description; /* WPCS: xss ok. */ ?></p>
-			<?php
-			endif; ?>
+			<?php endif; ?>
 		</div><!-- .site-branding -->
 
 		<nav id="site-navigation" class="main-navigation" role="navigation">
-			<button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Primary Menu', 'firstgen' ); ?></button>
-			<?php wp_nav_menu( array( 'theme_location' => 'primary', 'menu_id' => 'primary-menu' ) ); ?>
+			<?php //The following line of code creates a button for the mobile nav menu. ?>
+            <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Menu', 'firstgen' ); ?></button>
+			
+            <?php //The following code works in conjunction with functions.php to display menus that have been created in functions.php. The 'menu_class' is borrowed from the theme 'Twentyfifteen' ?>
+            <?php wp_nav_menu( array( 'theme_location' => 'primary', 'menu_id' => 'primary-menu', 'menu_class' => 'nav-menu' ) ); ?>
 		</nav><!-- #site-navigation -->
 	</header><!-- #masthead -->
 

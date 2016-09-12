@@ -13,8 +13,9 @@ get_header(); ?>
 		<main id="main" class="site-main" role="main">
 
 		<?php
-		while ( have_posts() ) : the_post();
-
+		while ( have_posts() ) : the_post(); /*This shows the most current post of all posts available. */
+            
+            /* 'template-parts/content contains the actual content elements of a single page post. */
 			get_template_part( 'template-parts/content', get_post_format() );
 
 			the_post_navigation();
